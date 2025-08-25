@@ -27,6 +27,58 @@ Estructura resumida:
   - id, cliente_id, timestamp, tipo
   - campos condicionales según tipo (llamadas, promesas, renegociaciones, pagos, etc.)
 
+```
+{
+  "metadata": {
+    "fecha_generacion": string,    // ISO timestamp
+    "total_clientes": number,
+    "total_interacciones": number,
+    "periodo": string
+  },
+  "clientes": [
+    {
+      "id": string,                 // formato: "cliente_XXX"
+      "nombre": string,
+      "telefono": string,
+      "monto_deuda_inicial": number,
+      "fecha_prestamo": string,     // formato: "YYYY-MM-DD"
+      "tipo_deuda": string           // valores: "tarjeta_credito" | "prestamo_personal" | "hipoteca" | "auto"
+    }
+  ],
+  "interacciones": [
+    {
+      "id": string,                  // UUID corto
+      "cliente_id": string,
+      "timestamp": string,           // ISO timestamp con Z
+      "tipo": string,                // valores: "llamada_saliente" | "llamada_entrante" | "email" | "sms" | "pago_recibido"
+      
+      // Campos condicionales según tipo:
+      
+      // Si tipo es llamada_*:
+      "duracion_segundos"?: number,
+      "agente_id"?: string,
+      "resultado"?: string,          // valores: "promesa_pago" | "sin_respuesta" | "renegociacion" | "disputa" | "pago_inmediato" | "se_niega_pagar"
+      "sentimiento"?: string,        // valores: "cooperativo" | "neutral" | "frustrado" | "hostil" | "n/a"
+      
+      // Si resultado es "promesa_pago":
+      "monto_prometido"?: number,
+      "fecha_promesa"?: string,
+      
+      // Si resultado es "renegociacion":
+      "nuevo_plan_pago"?: {
+        "cuotas": number,
+        "monto_mensual": number
+      },
+      
+      // Si tipo es "pago_recibido":
+      "monto"?: number,
+      "metodo_pago"?: string,        // valores: "transferencia" | "tarjeta" | "efectivo"
+      "pago_completo"?: boolean
+    }
+  ]
+}
+```
+
 📊 Dataset: ~50 clientes, 500+ interacciones, distribuidas en 90 días.
 
 ---
