@@ -364,12 +364,12 @@ class GraphittiSetting:
             if not self.graphiti:
                 raise RuntimeError("Graphiti no está inicializado")
 
-    async def query(self):
+    async def query(self):      
         # result = await self.graphiti.search("MATCH (c:CLIENTE) RETURN count(c) AS total_clientes")
         result = await self.graphiti.search("""
-MATCH (c:CLIENTE {nombre: "Cliente 13"})-[:RELATIONS_TO]->(d:DEUDA)
-RETURN sum(d.monto) AS total_deuda
-""")
+            MATCH (c:CLIENTE {nombre: "Cliente 13"})-[:RELATIONS_TO]->(d:DEUDA)
+            RETURN sum(d.monto) AS total_deuda
+        """)
         print("\n".join([edge.fact for edge in result]))
         return result
     

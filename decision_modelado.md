@@ -1,4 +1,4 @@
-## 2. Decisiones de Modelado y Consideraciones
+## 1. Decisiones de Modelado y Consideraciones
 
 ### 📌 Evolución temporal de la deuda
 - Cada **pago** y **renegociación** se modela como un **episodio** (`nodo: Episodio`).
